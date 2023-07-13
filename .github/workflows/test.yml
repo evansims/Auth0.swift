@@ -52,15 +52,16 @@ jobs:
         run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
 
   test-ios:
-    needs: install-dependencies-xcode-14_3
+    needs:
+      - install-dependencies-xcode-14_3
+      - install-dependencies-xcode-14_2
 
     strategy:
       matrix:
-        runner: ["macos-13"]
         build:
-          - {os: "16.4", xcode: "14.3", swift: "5.9"}
-          - {os: "16.4", xcode: "14.3", swift: "5.8"}
-          - {os: "16.4", xcode: "14.3", swift: "5.7"}
+          - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.9"}
+          - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.8"}
+          - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.7"}
           # - {os: "15", xcode: "14.3", swift: "5.9"}
           # - {os: "15", xcode: "14.3", swift: "5.8"}
           # - {os: "15", xcode: "14.3", swift: "5.7"}
@@ -72,7 +73,7 @@ jobs:
           # - {os: "13", xcode: "14.3", swift: "5.7"}
 
     name: iOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }}, Runner ${{ matrix.runner }})
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.build['runner'] }}
 
     steps:
       - uses: actions/checkout@v3
@@ -101,18 +102,18 @@ jobs:
     strategy:
       matrix:
         build:
-          - {os: "13", xcode: "14.3", swift: "5.9"}
-          - {os: "13", xcode: "14.3", swift: "5.8"}
-          - {os: "13", xcode: "14.3", swift: "5.7"}
-          - {os: "12", xcode: "14.2", swift: "5.9"}
-          - {os: "12", xcode: "14.2", swift: "5.8"}
-          - {os: "12", xcode: "14.2", swift: "5.7"}
-          # - {os: "11", xcode: "14.3", swift: "5.9"}
-          # - {os: "11", xcode: "14.3", swift: "5.8"}
-          # - {os: "11", xcode: "14.3", swift: "5.7"}
+          - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.9"}
+          - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.8"}
+          - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.7"}
+          - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.9"}
+          - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.8"}
+          - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.7"}
+          # - {runner: "11", os: "11.3", xcode: "14.2", swift: "5.9"}
+          # - {runner: "11", os: "11.3", xcode: "14.2", swift: "5.8"}
+          # - {runner: "11", os: "11.3", xcode: "14.2", swift: "5.7"}
 
     name: macOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
-    runs-on: macos-${{ matrix.build['os'] }}
+    runs-on: ${{ matrix.build['runner'] }}
 
     steps:
       - uses: actions/checkout@v3
@@ -137,24 +138,34 @@ jobs:
       - run: swift test --enable-code-coverage
 
   test-tvos:
-    needs: install-dependencies-xcode-14_3
+    needs:
+      - install-dependencies-xcode-14_3
+      - install-dependencies-xcode-14_2
 
     strategy:
       matrix:
-        runner: ["macos-13"]
         build:
-          - {os: "16.4", xcode: "14.3", swift: "5.9"}
-          - {os: "16.4", xcode: "14.3", swift: "5.8"}
-          - {os: "16.4", xcode: "14.3", swift: "5.7"}
+          - {os: "16.4", xcode: "14.3", swift: "5.9", runner: "macos-13"}
+          - {os: "16.4", xcode: "14.3", swift: "5.8", runner: "macos-13"}
+          - {os: "16.4", xcode: "14.3", swift: "5.7", runner: "macos-13"}
+          - {os: "15.5", xcode: "14.2", swift: "5.9", runner: "macos-12"}
+          - {os: "15.5", xcode: "14.2", swift: "5.8", runner: "macos-12"}
+          - {os: "15.5", xcode: "14.2", swift: "5.7", runner: "macos-12"}
+          # - {os: "14.5", xcode: "14.2", swift: "5.9", runner: "macos-11"}
+          # - {os: "14.5", xcode: "14.2", swift: "5.8", runner: "macos-11"}
+          # - {os: "14.5", xcode: "14.2", swift: "5.7", runner: "macos-11"}
 
     name: tvOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.build['runner'] }}
 
     steps:
       - uses: actions/checkout@v3
 
       - if: startsWith(matrix.build['xcode'], '14.3')
         run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_3.app" && /usr/bin/xcodebuild -version
+
+      - if: startsWith(matrix.build['xcode'], '14.2')
+        run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_2.app" && /usr/bin/xcodebuild -version
 
       - uses: swift-actions/setup-swift@v1
         with:
