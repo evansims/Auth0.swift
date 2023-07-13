@@ -14,8 +14,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      # - run: brew install fastlane
+
       - run: bundle install
+        env:
+          BUNDLE_WITHOUT: development # Stop bundler tool from installing development dependencies
+
       - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
 
   build-and-test:
@@ -50,13 +53,14 @@ jobs:
     name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }})
 
     # Run the job on macOS
-    runs-on: macos-${{ matrix.os }}
-
-    env:
-      BUNDLE_WITHOUT: development # Skip bundler tool from installing development dependencies
+    runs-on: macos-${{ matrix.build['os'] }}
 
     steps:
       - uses: actions/checkout@v3
+
+      - uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
 
       - run: swift format lint  --parallel --configuration .swiftlint.yml -r .
 
