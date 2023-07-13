@@ -89,7 +89,9 @@ jobs:
       - run: swift test --enable-code-coverage
 
   test-macos:
-    needs: install-dependencies-xcode-14_3, install-dependencies-xcode-14_2
+    needs:
+      - install-dependencies-xcode-14_3
+      - install-dependencies-xcode-14_2
 
     strategy:
       fail-fast: true
