@@ -89,7 +89,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' CODE_SIGNING_ALLOWED=No | xcpretty
+      - run: set -o pipefail && xcodebuild test -sdk iphonesimulator -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
@@ -132,7 +132,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=No | xcpretty
+      - run: set -o pipefail && xcodebuild test -sdk macosx -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
@@ -165,7 +165,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV' CODE_SIGNING_ALLOWED=No | xcpretty
+      - run: set -o pipefail && xcodebuild test -sdk appletvsimulator -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
