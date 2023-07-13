@@ -80,6 +80,10 @@ jobs:
       - if: startsWith(matrix.build['xcode'], '14.3')
         run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_3.app" && /usr/bin/xcodebuild -version
 
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.build['swift'] }}
+
       - uses: actions/cache@v3
         with:
           path: Carthage
@@ -119,6 +123,10 @@ jobs:
       - if: startsWith(matrix.build['xcode'], '14.2')
         run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_2.app" && /usr/bin/xcodebuild -version
 
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.build['swift'] }}
+
       - uses: actions/cache@v3
         with:
           path: Carthage
@@ -147,6 +155,10 @@ jobs:
 
       - if: startsWith(matrix.build['xcode'], '14.3')
         run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_3.app" && /usr/bin/xcodebuild -version
+
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.build['swift'] }}
 
       - uses: actions/cache@v3
         with:
