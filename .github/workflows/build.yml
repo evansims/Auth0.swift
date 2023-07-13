@@ -55,7 +55,7 @@ jobs:
           - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV 4K' }
 
     # Label the job with the platform, Xcode version, and Swift version
-    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (macOS ${{ matrix.build['os'] }}, Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }})
+    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'], Runner macOS-${{ matrix.build['os'] }} }})
 
     # Run the job on macOS
     runs-on: macos-${{ matrix.build['os'] }}
@@ -70,7 +70,7 @@ jobs:
 
       - run: xcodebuild clean test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['build'] }}'
         env:
-          DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
 
       - run: swift test --enable-code-coverage
 
