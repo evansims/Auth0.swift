@@ -59,7 +59,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
@@ -93,7 +93,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
