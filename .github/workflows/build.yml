@@ -140,7 +140,7 @@ jobs:
 
       - run: sudo rm '/usr/local/bin/swiftlint' && brew install swiftlint
 
-      - run: swift lint  --parallel --configuration .swiftlint.yml -r .
+      - run: swiftlint  --parallel --configuration .swiftlint.yml -r .
 
   cocoapods-lint:
     needs: install-dependencies
