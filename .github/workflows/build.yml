@@ -14,9 +14,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - run: brew install fastlane
+      # - run: brew install fastlane
       - run: bundle install
-      - run: fastlane run pod_lib_lint verbose:"false" allow_warnings:"true" platforms:"ios,osx,tvos"
+      - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
 
   build-and-test:
     strategy:
