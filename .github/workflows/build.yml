@@ -68,13 +68,21 @@ jobs:
       #   with:
       #     detached: true
 
-      - run: swift lint  --parallel --configuration .swiftlint.yml -r .
-
       - run: xcodebuild clean test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['build'] }}'
         env:
           DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
 
       - run: swift test --enable-code-coverage
+
+  swiftlint:
+    name: "Cocoapods Lint"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: brew install swiftlint
+
+      - run: swift lint  --parallel --configuration .swiftlint.yml -r .
 
   cocoapods-lint:
     name: "Cocoapods Lint"
