@@ -1,0 +1,185 @@
+name: "Build"
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - master
+
+permissions: {}
+
+env:
+  XCODE_VERSION_14_3: "14.3.1"
+  XCODE_VERSION_14_2: "14.2"
+
+jobs:
+  install-dependencies-xcode-14_3:
+    name: Dependencies (Xcode 14.3)
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION_14_3 }}.app && /usr/bin/xcodebuild -version
+
+      - id: carthage-cache
+        uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-xcode-14.3-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - if: steps.carthage-cache.outputs.cache-hit != 'true'
+        run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
+
+  install-dependencies-xcode-14_2:
+    name: Dependencies (Xcode 14.2)
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION_14_3 }}.app && /usr/bin/xcodebuild -version
+
+      - id: carthage-cache
+        uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-xcode-14.3-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - if: steps.carthage-cache.outputs.cache-hit != 'true'
+        run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
+
+  test-ios:
+    needs: install-dependencies-xcode-14_3
+
+    strategy:
+      fail-fast: true
+      matrix:
+        runner: ["macos-13"]
+        build:
+          - {os: "16.4", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "16.4", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "16.4", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          # - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          # - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          # - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          # - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          # - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          # - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          # - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          # - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          # - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+
+    name: iOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }}, Runner ${{ matrix.runner }})
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.build['xcode'] }}.app && /usr/bin/xcodebuild -version
+
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' CODE_SIGNING_ALLOWED=No | xcpretty
+
+      - run: swift test --enable-code-coverage
+
+  test-macos:
+    needs: install-dependencies-xcode-14_3, install-dependencies-xcode-14_2
+
+    strategy:
+      fail-fast: true
+      matrix:
+        build:
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          - {os: "12", xcode: "${{ env.XCODE_VERSION_14_2 }}", swift: "5.9"}
+          - {os: "12", xcode: "${{ env.XCODE_VERSION_14_2 }}", swift: "5.8"}
+          - {os: "12", xcode: "${{ env.XCODE_VERSION_14_2 }}", swift: "5.7"}
+          # - {os: "11", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          # - {os: "11", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          # - {os: "11", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+
+    name: macOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
+    runs-on: macos-${{ matrix.build['os'] }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.build['xcode'] }}.app && /usr/bin/xcodebuild -version
+
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=No | xcpretty
+
+      - run: swift test --enable-code-coverage
+
+  test-tvos:
+    needs: install-dependencies
+
+    strategy:
+      fail-fast: true
+      matrix:
+        runner: ["macos-13"]
+        build:
+          - {os: "16", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "16", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "16", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "15", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "14", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.9"}
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.8"}
+          - {os: "13", xcode: "${{ env.XCODE_VERSION_14_3 }}", swift: "5.7"}
+
+    name: tvOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.build['xcode'] }}.app && /usr/bin/xcodebuild -version
+
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K' CODE_SIGNING_ALLOWED=No | xcpretty
+
+      - run: swift test --enable-code-coverage
+
+  swiftlint:
+    name: "Swiftlint"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: sudo rm '/usr/local/bin/swiftlint' && brew install swiftlint
+
+      - run: swiftlint --config .swiftlint.yml
+
+  cocoapods-lint:
+    needs: install-dependencies
+    name: "Cocoapods Lint"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: bundle install
+        env:
+          BUNDLE_WITHOUT: development # Stop bundler tool from installing development dependencies
+
+      - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
