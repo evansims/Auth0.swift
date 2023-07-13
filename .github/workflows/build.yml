@@ -10,6 +10,8 @@ permissions: {}
 
 jobs:
   install-dependencies:
+    name: Carthage
+
     runs-on: macos-latest
 
     steps:
@@ -55,10 +57,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-carthage-ios-${{ hashFiles('**/Cartfile.resolved') }}
-
-      - if: steps.carthage-cache.outputs.cache-hit != 'true'
-        run: carthage bootstrap  --platform iOS --use-xcframeworks --no-use-binaries --cache-builds
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' | xcpretty
 
