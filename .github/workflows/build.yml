@@ -38,7 +38,7 @@ jobs:
       - if: steps.carthage-cache.outputs.cache-hit != 'true'
         run: carthage bootstrap  --platform iOS --use-xcframeworks --no-use-binaries --cache-builds
 
-      - run: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14 Pro' | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14 Pro' | xcpretty
 
       - run: swift test --enable-code-coverage
 
