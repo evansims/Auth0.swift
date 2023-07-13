@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-xcode-14.3-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          key: ${{ runner.os }}-14.3-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - if: steps.carthage-cache.outputs.cache-hit != 'true'
         run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-xcode-14.3-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          key: ${{ runner.os }}-14.2-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - if: steps.carthage-cache.outputs.cache-hit != 'true'
         run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
@@ -82,7 +82,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' CODE_SIGNING_ALLOWED=No | xcpretty
 
@@ -122,7 +122,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.macOS' -destination 'platform=macOS' CODE_SIGNING_ALLOWED=No | xcpretty
 
@@ -161,7 +161,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
       - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K' CODE_SIGNING_ALLOWED=No | xcpretty
 
