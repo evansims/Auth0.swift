@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         runner: ["macos-13", "macos-12"]
-        os:
+        build:
           - {os: "13", xcode: "14.3.1", swift: "5.9"}
           - {os: "13", xcode: "14.3.1", swift: "5.8"}
           - {os: "13", xcode: "14.3.1", swift: "5.7"}
@@ -22,17 +22,17 @@ jobs:
           - {os: "12", xcode: "14.2", swift: "5.8"}
           - {os: "12", xcode: "14.2", swift: "5.7"}
 
-    name: iOS ${{ matrix.os }} (Swift ${{ matrix.swift }}, Xcode ${{ matrix.xcode }}, Runner ${{ matrix.runner }})
+    name: iOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }}, Runner ${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v3
 
-      - run: sudo xcode-select -s "/Applications/Xcode_${{ matrix.xcode }}.app"
+      - run: sudo xcode-select -s "/Applications/Xcode_${{ matrix.build['xcode'] }}.app"
 
       - run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
 
-      - run: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.os }},name=iPhone 14 Pro' | xcpretty
+      - run: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14 Pro' | xcpretty
 
       - run: swift test --enable-code-coverage
 
