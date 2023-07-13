@@ -9,18 +9,40 @@ on:
 permissions: {}
 
 jobs:
+  install-dependencies:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+
+      - if: steps.carthage-cache.outputs.cache-hit != 'true'
+        run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
+
   test-ios:
+    depends-on: install-dependencies
+
     strategy:
       fail-fast: true
       matrix:
         runner: ["macos-13"]
         build:
-          - {os: "13", xcode: "14.3.1", swift: "5.9"}
-          - {os: "13", xcode: "14.3.1", swift: "5.8"}
-          - {os: "13", xcode: "14.3.1", swift: "5.7"}
-          - {os: "12", xcode: "14.2", swift: "5.9"}
-          - {os: "12", xcode: "14.2", swift: "5.8"}
-          - {os: "12", xcode: "14.2", swift: "5.7"}
+          - {os: "16", xcode: "14.3.1", swift: "5.9"}
+          - {os: "16", xcode: "14.3.1", swift: "5.8"}
+          - {os: "16", xcode: "14.3.1", swift: "5.7"}
+          # - {os: "15", xcode: "14.3.1", swift: "5.9"}
+          # - {os: "15", xcode: "14.3.1", swift: "5.8"}
+          # - {os: "15", xcode: "14.3.1", swift: "5.7"}
+          # - {os: "14", xcode: "14.3.1", swift: "5.9"}
+          # - {os: "14", xcode: "14.3.1", swift: "5.8"}
+          # - {os: "14", xcode: "14.3.1", swift: "5.7"}
+          # - {os: "13", xcode: "14.3.1", swift: "5.9"}
+          # - {os: "13", xcode: "14.3.1", swift: "5.8"}
+          # - {os: "13", xcode: "14.3.1", swift: "5.7"}
 
     name: iOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }}, Runner ${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
@@ -38,7 +60,7 @@ jobs:
       - if: steps.carthage-cache.outputs.cache-hit != 'true'
         run: carthage bootstrap  --platform iOS --use-xcframeworks --no-use-binaries --cache-builds
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14 Pro' | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.iOS' -destination 'platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone 14' | xcpretty
 
       - run: swift test --enable-code-coverage
 
