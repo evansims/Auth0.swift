@@ -14,55 +14,22 @@ jobs:
       fail-fast: true
       matrix:
         scheme: ["macOS", "tvOS"],
-        os: ["13", "12"],
+        os: ["13", "12", "11"],
         xcode: ["14.3"],
-        swift: ["5.9", "5.8", "5.7"],
-          # # iOS 15
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          # # iOS 14
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          # # iOS 13
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
-          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
-          # macOS 13
-          - { scheme: "macOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=macOS,OS=13' }
-          - { scheme: "macOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=macOS,OS=13' }
-          - { scheme: "macOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=macOS,OS=13' }
-          # macOS 12
-          - { scheme: "macOS", os: "12", xcode: "14.3", swift: "5.9", build: 'platform=macOS,OS=12' }
-          - { scheme: "macOS", os: "12", xcode: "14.3", swift: "5.8", build: 'platform=macOS,OS=12' }
-          - { scheme: "macOS", os: "12", xcode: "14.3", swift: "5.7", build: 'platform=macOS,OS=12' }
-          # macOS 11
-          - { scheme: "macOS", os: "11", xcode: "14.3", swift: "5.9", build: 'platform=macOS,OS=11' }
-          - { scheme: "macOS", os: "11", xcode: "14.3", swift: "5.8", build: 'platform=macOS,OS=11' }
-          - { scheme: "macOS", os: "11", xcode: "14.3", swift: "5.7", build: 'platform=macOS,OS=11' }
-          # tvOS 16
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=tvOS Simulator,OS=16,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=tvOS Simulator,OS=16,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=tvOS Simulator,OS=16,name=Apple TV 4K' }
-          # tvOS 15
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=tvOS Simulator,OS=15,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=tvOS Simulator,OS=15,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=tvOS Simulator,OS=15,name=Apple TV 4K' }
-          # tvOS 14
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV 4K' }
-          # tvOS 13
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=tvOS Simulator,OS=13,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=tvOS Simulator,OS=13,name=Apple TV 4K' }
-          - { scheme: "tvOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV 4K' }
+        swift: ["5.9", "5.8", "5.7"]
 
     # Label the job with the platform, Xcode version, and Swift version
     name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }}, Runner macOS-${{ matrix.build['os'] }})
 
     # Run the job on macOS
     runs-on: macos-${{ matrix.build['os'] }}
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
+      XCODEDEBUG_TEST: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination
+      IOS_DESTINATION: platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone X
+      MACOS_DESTINATION: platform=macOS,OS=${{ matrix.build['os'] }}
+      TVOS_DESTINATION: platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K
 
     steps:
       - name: "Checkout Code"
@@ -72,9 +39,14 @@ jobs:
       #   with:
       #     detached: true
 
-      - run: xcodebuild test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination '${{ matrix.build['build'] }}'
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
+      - if: ${{ env.scheme == 'iOS' }}
+        run: ${{ env.XCODEDEBUG_TEST }} ${{env.IOS_DESTINATION}} | xcpretty
+
+      - if: ${{ env.scheme == 'macOS' }}
+        run: ${{ env.XCODEDEBUG_TEST }} ${{env.MACOS_DESTINATION}} | xcpretty
+
+      - if: ${{ env.scheme == 'tvOS' }}
+        run: ${{ env.XCODEDEBUG_TEST }} ${{env.MACOS_DESTINATION}} | xcpretty
 
       - run: swift test --enable-code-coverage
 
