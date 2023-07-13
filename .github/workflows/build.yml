@@ -128,7 +128,7 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.os }},name=Apple TV 4K' CODE_SIGNING_ALLOWED=No | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
