@@ -59,7 +59,7 @@ jobs:
     strategy:
       matrix:
         build:
-          - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.9"}
+          # - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.9"}
           - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.8"}
           - {runner: "macos-13", os: "16.4", xcode: "14.3", swift: "5.7"}
           # - {os: "15", xcode: "14.3", swift: "5.9"}
@@ -102,10 +102,10 @@ jobs:
     strategy:
       matrix:
         build:
-          - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.9"}
+          # - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.9"}
           - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.8"}
           - {runner: "13", os: "13.3", xcode: "14.3", swift: "5.7"}
-          - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.9"}
+          # - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.9"}
           - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.8"}
           - {runner: "12", os: "12.3", xcode: "14.2", swift: "5.7"}
           # - {runner: "11", os: "11.3", xcode: "14.2", swift: "5.9"}
@@ -145,10 +145,10 @@ jobs:
     strategy:
       matrix:
         build:
-          - {os: "16.4", xcode: "14.3", swift: "5.9", runner: "macos-13"}
+          # - {os: "16.4", xcode: "14.3", swift: "5.9", runner: "macos-13"}
           - {os: "16.4", xcode: "14.3", swift: "5.8", runner: "macos-13"}
           - {os: "16.4", xcode: "14.3", swift: "5.7", runner: "macos-13"}
-          - {os: "15.5", xcode: "14.2", swift: "5.9", runner: "macos-12"}
+          # - {os: "15.5", xcode: "14.2", swift: "5.9", runner: "macos-12"}
           - {os: "15.5", xcode: "14.2", swift: "5.8", runner: "macos-12"}
           - {os: "15.5", xcode: "14.2", swift: "5.7", runner: "macos-12"}
           # - {os: "14.5", xcode: "14.2", swift: "5.9", runner: "macos-11"}
