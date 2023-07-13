@@ -69,7 +69,7 @@ jobs:
       #   with:
       #     detached: true
 
-      - run: xcodebuild clean test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['build'] }}'
+      - run: xcodebuild clean test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination '${{ matrix.build['build'] }}'
         env:
           DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
 
