@@ -9,45 +9,50 @@ on:
 permissions: {}
 
 jobs:
-  cocoapods-lint:
-    name: "Cocoapods Lint"
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - run: bundle install
-        env:
-          BUNDLE_WITHOUT: development # Stop bundler tool from installing development dependencies
-
-      - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
-
   build-and-test:
     strategy:
       matrix:
         build:
-          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=iOS' }
+          # iOS 15
+          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=15' }
+          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=15' }
+          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=15' }
+          # iOS 14
+          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=14' }
+          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=14' }
+          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=14' }
+          # iOS 13
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=13' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=13' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=13' }
           # macOS 13
-          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.6", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=macOS' }
-          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
-          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.6", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
-          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
-          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
-          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "macOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=macOS' }
           # macOS 12
-          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.5", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.6", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.7", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.8", build: 'platform=macOS' }
-          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.9", build: 'platform=macOS' }
-          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.5", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
-          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.6", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
-          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.7", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
-          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.8", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
-          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.9", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+          - { scheme: "macOS", os: "12", xcode: "14", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "14", swift: "5.8", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "14", swift: "5.7", build: 'platform=macOS' }
+          # macOS 11
+          - { scheme: "macOS", os: "11", xcode: "14", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "11", xcode: "14", swift: "5.8", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "11", xcode: "14", swift: "5.7", build: 'platform=macOS' }
+          # tvOS 16
+          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          # tvOS 15
+          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          # tvOS 14
+          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          # tvOS 13
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
 
     # Label the job with the platform, Xcode version, and Swift version
     name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }})
@@ -59,9 +64,9 @@ jobs:
       - name: "Checkout Code"
         uses: actions/checkout@v3
 
-      - uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
+      # - uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
 
       - run: swift lint  --parallel --configuration .swiftlint.yml -r .
 
@@ -70,3 +75,15 @@ jobs:
           DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
 
       - run: swift test --enable-code-coverage
+
+  cocoapods-lint:
+    name: "Cocoapods Lint"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: bundle install
+        env:
+          BUNDLE_WITHOUT: development # Stop bundler tool from installing development dependencies
+
+      - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
