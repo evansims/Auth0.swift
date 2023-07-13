@@ -34,9 +34,9 @@ jobs:
       matrix:
         runner: ["macos-13"]
         build:
-          - {os: "16", xcode: "14.3.1", swift: "5.9"}
-          - {os: "16", xcode: "14.3.1", swift: "5.8"}
-          - {os: "16", xcode: "14.3.1", swift: "5.7"}
+          - {os: "16.4", xcode: "14.3.1", swift: "5.9"}
+          - {os: "16.4", xcode: "14.3.1", swift: "5.8"}
+          - {os: "16.4", xcode: "14.3.1", swift: "5.7"}
           # - {os: "15", xcode: "14.3.1", swift: "5.9"}
           # - {os: "15", xcode: "14.3.1", swift: "5.8"}
           # - {os: "15", xcode: "14.3.1", swift: "5.7"}
@@ -106,15 +106,18 @@ jobs:
       matrix:
         runner: ["macos-13"]
         build:
+          - {os: "16", xcode: "14.3.1", swift: "5.9"}
+          - {os: "16", xcode: "14.3.1", swift: "5.8"}
+          - {os: "16", xcode: "14.3.1", swift: "5.7"}
+          - {os: "15", xcode: "14.3.1", swift: "5.9"}
+          - {os: "15", xcode: "14.3.1", swift: "5.8"}
+          - {os: "15", xcode: "14.3.1", swift: "5.7"}
+          - {os: "14", xcode: "14.3.1", swift: "5.9"}
+          - {os: "14", xcode: "14.3.1", swift: "5.8"}
+          - {os: "14", xcode: "14.3.1", swift: "5.7"}
           - {os: "13", xcode: "14.3.1", swift: "5.9"}
           - {os: "13", xcode: "14.3.1", swift: "5.8"}
           - {os: "13", xcode: "14.3.1", swift: "5.7"}
-          - {os: "12", xcode: "14.3.1", swift: "5.9"}
-          - {os: "12", xcode: "14.3.1", swift: "5.8"}
-          - {os: "12", xcode: "14.3.1", swift: "5.7"}
-          - {os: "11", xcode: "14.3.1", swift: "5.9"}
-          - {os: "11", xcode: "14.3.1", swift: "5.8"}
-          - {os: "11", xcode: "14.3.1", swift: "5.7"}
 
     name: tvOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
     runs-on: ${{ matrix.runner }}
