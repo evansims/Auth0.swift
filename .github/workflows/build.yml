@@ -20,7 +20,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        builds:
+        build:
           - { scheme: "iOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
           # macOS 13
           - { scheme: "macOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
@@ -46,7 +46,7 @@ jobs:
           - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.9", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
 
     # Label the job with the platform, Xcode version, and Swift version
-    name: ${{ matrix.scheme }} ${{ matrix.os }} (Xcode ${{ matrix.xcode }}, Swift ${{ matrix.swift }})
+    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }})
 
     # Run the job on macOS
     runs-on: macos-${{ matrix.os }}
@@ -59,7 +59,7 @@ jobs:
 
       - run: swift format lint  --parallel --configuration .swiftlint.yml -r .
 
-      - run: xcodebuild clean test -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['destination'] }}' --workspace Auth0.xcworkspace Auth0.xcodeproj
+      - run: xcodebuild clean test -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['build'] }}' --workspace Auth0.xcworkspace Auth0.xcodeproj
         env:
           DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
 
