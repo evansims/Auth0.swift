@@ -74,9 +74,9 @@ jobs:
           - {os: "13", xcode: "14.3.1", swift: "5.9"}
           - {os: "13", xcode: "14.3.1", swift: "5.8"}
           - {os: "13", xcode: "14.3.1", swift: "5.7"}
-          - {os: "12", xcode: "14.3.1", swift: "5.9"}
-          - {os: "12", xcode: "14.3.1", swift: "5.8"}
-          - {os: "12", xcode: "14.3.1", swift: "5.7"}
+          - {os: "12", xcode: "14.2", swift: "5.9"}
+          - {os: "12", xcode: "14.2", swift: "5.8"}
+          - {os: "12", xcode: "14.2", swift: "5.7"}
           # - {os: "11", xcode: "14.3.1", swift: "5.9"}
           # - {os: "11", xcode: "14.3.1", swift: "5.8"}
           # - {os: "11", xcode: "14.3.1", swift: "5.7"}
