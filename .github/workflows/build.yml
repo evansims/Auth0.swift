@@ -55,7 +55,7 @@ jobs:
           - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV 4K' }
 
     # Label the job with the platform, Xcode version, and Swift version
-    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'], Runner macOS-${{ matrix.build['os'] }} }})
+    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'], Runner macOS-${{ matrix.build['os'])
 
     # Run the job on macOS
     runs-on: macos-${{ matrix.build['os'] }}
