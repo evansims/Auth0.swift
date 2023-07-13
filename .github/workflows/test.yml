@@ -20,7 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_3.app" && /usr/bin/xcodebuild -version
+      - name: "Select Xcode $XCODE_VERSION_14_3"
+        run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_3.app" && /usr/bin/xcodebuild -version
 
       - id: carthage-cache
         uses: actions/cache@v3
@@ -38,7 +39,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_2.app" && /usr/bin/xcodebuild -version
+      - name: "Select Xcode $XCODE_VERSION_14_2"
+        run: sudo xcode-select -switch "/Applications/Xcode_$XCODE_VERSION_14_2.app" && /usr/bin/xcodebuild -version
 
       - id: carthage-cache
         uses: actions/cache@v3
