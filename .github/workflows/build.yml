@@ -1,0 +1,66 @@
+name: "Build"
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - master
+
+permissions: {}
+
+jobs:
+  cocoapods-lint:
+    name: "Cocoapods Lint"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: brew install fastlane
+      - run: fastlane run pod_lib_lint verbose:"false" allow_warnings:"true" platforms:"ios,osx,tvos"
+
+  build-and-test:
+    strategy:
+      matrix:
+        builds:
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
+          # macOS 13
+          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.6", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.6", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
+          # macOS 12
+          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.5", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.6", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.7", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.8", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "12", xcode: "12", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.5", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.6", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.7", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.8", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+          - { scheme: "tvOS", os: "12", xcode: "12", swift: "5.9", build: 'platform=tvOS Simulator,OS=12,name=Apple TV' }
+
+    # Label the job with the platform, Xcode version, and Swift version
+    name: ${{ matrix.scheme }} ${{ matrix.os }} (Xcode ${{ matrix.xcode }}, Swift ${{ matrix.swift }})
+
+    # Run the job on macOS
+    runs-on: macos-${{ matrix.os }}
+
+    env:
+      BUNDLE_WITHOUT: development # Skip bundler tool from installing development dependencies
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: swift format lint  --parallel --configuration .swiftlint.yml -r .
+
+      - run: xcodebuild clean test -scheme 'Auth0.${{ matrix.xcodebuild['scheme'] }}' -destination '${{ matrix.xcodebuild['destination'] }}' --workspace Auth0.xcworkspace Auth0.xcodeproj
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+
+      - run: swift test --enable-code-coverage
