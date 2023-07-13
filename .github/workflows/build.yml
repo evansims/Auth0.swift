@@ -22,12 +22,10 @@ jobs:
       - run: bundle exec fastlane run pod_lib_lint verbose:false allow_warnings:true platforms:ios,osx,tvos
 
   build-and-test:
-    name: "Build and Test"
-
     strategy:
       matrix:
         build:
-          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=iOS' }
           # macOS 13
           - { scheme: "macOS", os: "13", xcode: "13", swift: "5.5", build: 'platform=macOS' }
           - { scheme: "macOS", os: "13", xcode: "13", swift: "5.6", build: 'platform=macOS' }
