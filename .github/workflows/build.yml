@@ -11,6 +11,7 @@ permissions: {}
 jobs:
   build-and-test:
     strategy:
+      fail-fast: true
       matrix:
         build:
           # iOS 15
