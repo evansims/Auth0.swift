@@ -55,7 +55,6 @@ jobs:
     needs: install-dependencies-xcode-14_3
 
     strategy:
-      fail-fast: true
       matrix:
         runner: ["macos-13"]
         build:
@@ -96,7 +95,6 @@ jobs:
       - install-dependencies-xcode-14_2
 
     strategy:
-      fail-fast: true
       matrix:
         build:
           - {os: "13", xcode: "14.3", swift: "5.9"}
@@ -134,22 +132,12 @@ jobs:
     needs: install-dependencies-xcode-14_3
 
     strategy:
-      fail-fast: true
       matrix:
         runner: ["macos-13"]
         build:
-          - {os: "16", xcode: "14.3", swift: "5.9"}
-          - {os: "16", xcode: "14.3", swift: "5.8"}
-          - {os: "16", xcode: "14.3", swift: "5.7"}
-          - {os: "15", xcode: "14.3", swift: "5.9"}
-          - {os: "15", xcode: "14.3", swift: "5.8"}
-          - {os: "15", xcode: "14.3", swift: "5.7"}
-          - {os: "14", xcode: "14.3", swift: "5.9"}
-          - {os: "14", xcode: "14.3", swift: "5.8"}
-          - {os: "14", xcode: "14.3", swift: "5.7"}
-          - {os: "13", xcode: "14.3", swift: "5.9"}
-          - {os: "13", xcode: "14.3", swift: "5.8"}
-          - {os: "13", xcode: "14.3", swift: "5.7"}
+          - {os: "16.4", xcode: "14.3", swift: "5.9"}
+          - {os: "16.4", xcode: "14.3", swift: "5.8"}
+          - {os: "16.4", xcode: "14.3", swift: "5.7"}
 
     name: tvOS ${{ matrix.build['os'] }} (Swift ${{ matrix.build['swift'] }}, Xcode ${{ matrix.build['xcode'] }})
     runs-on: ${{ matrix.runner }}
@@ -165,12 +153,12 @@ jobs:
           path: Carthage
           key: ${{ runner.os }}-${{ matrix.build['xcode'] }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
 
-      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K' CODE_SIGNING_ALLOWED=No | xcpretty
+      - run: set -o pipefail && xcodebuild test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.tvOS' -destination 'platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV' CODE_SIGNING_ALLOWED=No | xcpretty
 
       - run: swift test --enable-code-coverage
 
-  swiftlint:
-    name: "Swiftlint"
+  swift-lint:
+    name: "Swift Lint"
     runs-on: macos-13
 
     steps:
