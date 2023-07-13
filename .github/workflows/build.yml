@@ -25,7 +25,7 @@ jobs:
     runs-on: macos-${{ matrix.os }}
 
     env:
-      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+      X_DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
       XCODEDEBUG_TEST: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.${{ matrix.scheme }}' -destination
       IOS_DESTINATION: platform=iOS Simulator,OS=${{ matrix.os }},name=iPhone X
       MACOS_DESTINATION: platform=macOS,OS=${{ matrix.os }}
