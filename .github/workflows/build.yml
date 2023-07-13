@@ -24,7 +24,7 @@ jobs:
         run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
 
   test-ios:
-    depends-on: install-dependencies
+    needs: install-dependencies
 
     strategy:
       fail-fast: true
