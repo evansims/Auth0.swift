@@ -15,7 +15,7 @@ env:
 
 jobs:
   install-dependencies-xcode-14_3:
-    name: Dependencies (Xcode ${{ env.XCODE_VERSION_14_3 }})
+    name: Dependencies (Xcode $XCODE_VERSION_14_3)
     runs-on: $MACOS_LATEST_RUNNER
 
     steps:
@@ -33,7 +33,7 @@ jobs:
         run: carthage bootstrap --use-xcframeworks --no-use-binaries --cache-builds
 
   install-dependencies-xcode-14_2:
-    name: Dependencies (Xcode ${{ env.XCODE_VERSION_14_2 }})
+    name: Dependencies (Xcode $XCODE_VERSION_14_2)
     runs-on: $MACOS_LATEST_RUNNER
 
     steps:
