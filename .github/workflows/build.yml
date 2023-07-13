@@ -13,19 +13,22 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        build:
-          # iOS 15
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
-          # iOS 14
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
-          # iOS 13
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
-          - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
+        scheme: ["macOS", "tvOS"],
+        os: ["13", "12"],
+        xcode: ["14.3"],
+        swift: ["5.9", "5.8", "5.7"],
+          # # iOS 15
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=15,name=iPhone X' }
+          # # iOS 14
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=14,name=iPhone X' }
+          # # iOS 13
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
+          # - { scheme: "iOS", os: "13", xcode: "14.3", swift: "5.7", build: 'platform=iOS Simulator,OS=13,name=iPhone X' }
           # macOS 13
           - { scheme: "macOS", os: "13", xcode: "14.3", swift: "5.9", build: 'platform=macOS,OS=13' }
           - { scheme: "macOS", os: "13", xcode: "14.3", swift: "5.8", build: 'platform=macOS,OS=13' }
@@ -69,7 +72,7 @@ jobs:
       #   with:
       #     detached: true
 
-      - run: xcodebuild clean test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination '${{ matrix.build['build'] }}'
+      - run: xcodebuild test -project Auth0.xcodeproj -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination '${{ matrix.build['build'] }}'
         env:
           DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
 
