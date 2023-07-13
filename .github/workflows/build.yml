@@ -19,17 +19,17 @@ jobs:
         swift: ["5.9", "5.8", "5.7"]
 
     # Label the job with the platform, Xcode version, and Swift version
-    name: ${{ matrix.build['scheme'] }} ${{ matrix.build['os'] }} (Xcode ${{ matrix.build['xcode'] }}, Swift ${{ matrix.build['swift'] }}, Runner macOS-${{ matrix.build['os'] }})
+    name: ${{ matrix.scheme }} ${{ matrix.os }} (Xcode ${{ matrix.xcode }}, Swift ${{ matrix.swift }}, Runner macOS-${{ matrix.os }})
 
     # Run the job on macOS
-    runs-on: macos-${{ matrix.build['os'] }}
+    runs-on: macos-${{ matrix.os }}
 
     env:
-      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.build['xcode'] }}.app/Contents/Developer
-      XCODEDEBUG_TEST: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.${{ matrix.build['scheme'] }}' -destination
-      IOS_DESTINATION: platform=iOS Simulator,OS=${{ matrix.build['os'] }},name=iPhone X
-      MACOS_DESTINATION: platform=macOS,OS=${{ matrix.build['os'] }}
-      TVOS_DESTINATION: platform=tvOS Simulator,OS=${{ matrix.build['os'] }},name=Apple TV 4K
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
+      XCODEDEBUG_TEST: test -project Auth0.xcodeproj -enableCodeCoverage YES -scheme 'Auth0.${{ matrix.scheme }}' -destination
+      IOS_DESTINATION: platform=iOS Simulator,OS=${{ matrix.os }},name=iPhone X
+      MACOS_DESTINATION: platform=macOS,OS=${{ matrix.os }}
+      TVOS_DESTINATION: platform=tvOS Simulator,OS=${{ matrix.os }},name=Apple TV 4K
 
     steps:
       - name: "Checkout Code"
