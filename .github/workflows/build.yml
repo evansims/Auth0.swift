@@ -14,19 +14,19 @@ jobs:
       matrix:
         build:
           # iOS 15
-          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=15' }
-          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=15' }
-          - { scheme: "iOS", os: "15", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=15' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=15' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=15' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=15' }
           # iOS 14
-          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=14' }
-          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=14' }
-          - { scheme: "iOS", os: "14", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=14' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=14' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=14' }
+          - { scheme: "iOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=14' }
           # iOS 13
           - { scheme: "iOS", os: "13", xcode: "13", swift: "5.9", build: 'platform=iOS,OS=13' }
           - { scheme: "iOS", os: "13", xcode: "13", swift: "5.8", build: 'platform=iOS,OS=13' }
           - { scheme: "iOS", os: "13", xcode: "13", swift: "5.7", build: 'platform=iOS,OS=13' }
           # macOS 13
-          - { scheme: "macOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=macOS' }
+          - { scheme: "macOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=macOS,OS' }
           - { scheme: "macOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=macOS' }
           - { scheme: "macOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=macOS' }
           # macOS 12
@@ -38,17 +38,17 @@ jobs:
           - { scheme: "macOS", os: "11", xcode: "14", swift: "5.8", build: 'platform=macOS' }
           - { scheme: "macOS", os: "11", xcode: "14", swift: "5.7", build: 'platform=macOS' }
           # tvOS 16
-          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "16", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=16,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=16,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=16,name=Apple TV' }
           # tvOS 15
-          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "15", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=15,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=15,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=15,name=Apple TV' }
           # tvOS 14
-          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
-          - { scheme: "tvOS", os: "14", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
+          - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.7", build: 'platform=tvOS Simulator,OS=14,name=Apple TV' }
           # tvOS 13
           - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.9", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
           - { scheme: "tvOS", os: "13", xcode: "14", swift: "5.8", build: 'platform=tvOS Simulator,OS=13,name=Apple TV' }
